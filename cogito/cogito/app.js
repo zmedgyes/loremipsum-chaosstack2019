@@ -22,7 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/login', (req, res) => {
+app.use('/login', (req, res) => {
     if (req.body.studentid) {
 
         req.session.studentid = req.body.studentid;
@@ -32,7 +32,7 @@ app.get('/login', (req, res) => {
         res.json({ success: false });
     }
 });
-app.get('/logout', (req, res) => {
+app.use('/logout', (req, res) => {
     if (req.session.studentid) {
         req.session.studentid = null;
     }
@@ -40,7 +40,7 @@ app.get('/logout', (req, res) => {
 });
 
 //req: { topic:(téma) }
-app.get('/getQuestion', (req, res) => {
+app.use('/getQuestion', (req, res) => {
     if (req.session.studentid) {
         let ret = {
             success: true,
@@ -63,7 +63,7 @@ app.get('/getQuestion', (req, res) => {
 });
 
 //req { questionId: 1, answer:"valasz2"};
-app.post('/sendAnswer', (req, res) => {
+app.use('/sendAnswer', (req, res) => {
     if (req.session.studentid) {
         let ret = {
             success: true,
@@ -78,7 +78,7 @@ app.post('/sendAnswer', (req, res) => {
     }
 });
 
-app.get('/getScore', (req, res) => {
+app.use('/getScore', (req, res) => {
     if (req.session.studentid) {
         var ret = {
             success: true,
