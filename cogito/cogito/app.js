@@ -65,6 +65,7 @@ app.use('/login', (req, res) => {
                     res.json({ success: false, data: err });
                 }
                 else {
+                    console.log("loginsuccess")
                     req.session.studentid = result.id;
                     res.json({ success: true });
                 }
@@ -87,74 +88,46 @@ app.use('/getQuestion', (req, res) => {
     const getQuestions = util.callbackify(prisma.questions);
     const getAnswers = util.callbackify(prisma.answers);
 
-    async.waterfall(
-        [
-            (callback) => {
-                getQuestions({ where: { test: { name: "Arts" } } }, callback);
-            },
-            (questions, callback) => {
-                getAnswers({ where: { question: { id: questions[0].id } } }, (err, result) => {
-                    if (err) {
-                        callback(err)
-                    }
-                    else {
-                        var ret = {
-                            success: true,
-                            data: {
-                                questionId: questions[0].id, // ezt majd vissza kell küldene
-                                question: questions[0].text,
-                                answers: [
-                                    result[0].text,
-                                    result[1].text,
-                                    result[2].text,
-                                    result[3].text
-                                ]
-                            }
-                        };
-                        callback(null, ret)
-                    }
-                })
-            }
-        ],
-        (err, result) => {
-            console.log(err, result)
-        }
-    )
-
     if (req.session.studentid) {
-       
-
-        
-
 
         async.waterfall(
             [
                 (callback) => {
-                    getTest({ name: req.body.topic }, callback);
+                    getQuestions({ where: { test: { name: "Arts" } } }, callback);
                 },
-                (test, callback) => {
-                    getQuestions({ test: test }, callback);
+                (questions, callback) => {
+                    getAnswers({ where: { question: { id: questions[0].id } } }, (err, result) => {
+                        if (err) {
+                            callback(err)
+                        }
+                        else {
+                            var ret = {
+                                success: true,
+                                data: {
+                                    questionId: questions[0].id, // ezt majd vissza kell küldene
+                                    question: questions[0].text,
+                                    answers: [
+                                        result[0].text,
+                                        result[1].text,
+                                        result[2].text,
+                                        result[3].text
+                                    ]
+                                }
+                            };
+                            callback(null, ret)
+                        }
+                    })
                 }
             ],
             (err, result) => {
-                console.log(result)
+                if (err) {
+                    res.json({ success: false, data: err });
+                }
+                else {
+                    res.json(result);
+                }
             }
         )
-
-        let ret = {
-            success: true,
-            data: {
-                questionId: 1, // ezt majd vissza kell küldene
-                question: "Mia?",
-                answers: [
-                    'valasz1',
-                    'valasz2',
-                    'valasz3',
-                    'valasz4'
-                ]
-            }
-        };
-        res.json(ret);
     }
     else {
         res.json({ success: false, data: "Unauthorized" });
@@ -163,14 +136,28 @@ app.use('/getQuestion', (req, res) => {
 
 //req { questionId: 1, answer:"valasz2"};
 app.use('/sendAnswer', (req, res) => {
+    const getCorrectAnswer = util.callbackify(prisma.questions)
+    
     if (req.session.studentid) {
-        let ret = {
-            success: true,
-            data: {
-                correct: true
+        getCorrectAnswer({
+            where: {
+                id: req.body.questionId,
+                correctAnswer: { text: req.body.answer }
             }
-        };
-        res.json(ret);
+        },
+        (err, result) => {
+            if (err) {
+                res.json({ success: false, data: err });
+            }
+            else {
+                if (result.length == 0) {
+                    res.json({ success: false, data: {correct:false} });
+                }
+                else {
+                    res.json({ success: false, data: { correct: true } });
+                }
+            }
+        })
     }
     else {
         res.json({ success: false, data: "Unauthorized" });
