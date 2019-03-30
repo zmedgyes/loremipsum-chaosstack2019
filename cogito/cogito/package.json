@@ -1,0 +1,9 @@
+{
+  "name": "cogito",
+  "version": "0.0.0",
+  "description": "cogito",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
