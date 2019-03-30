@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 
 app.use('/login', (req, res) => {
     if (req.body.studentid) {
-
         req.session.studentid = req.body.studentid;
         res.json({ success: true });
     }
