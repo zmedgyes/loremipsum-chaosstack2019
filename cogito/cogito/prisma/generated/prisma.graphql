@@ -1,0 +1,1055 @@
+type AggregateAnswer {
+  count: Int!
+}
+
+type AggregateCompletedTest {
+  count: Int!
+}
+
+type AggregateQuestion {
+  count: Int!
+}
+
+type AggregateScore {
+  count: Int!
+}
+
+type AggregateTest {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type Answer {
+  id: ID!
+  text: String!
+  question: Question
+}
+
+type AnswerConnection {
+  pageInfo: PageInfo!
+  edges: [AnswerEdge]!
+  aggregate: AggregateAnswer!
+}
+
+input AnswerCreateInput {
+  text: String!
+  question: QuestionCreateOneWithoutAnswersInput
+}
+
+input AnswerCreateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateOneInput {
+  create: AnswerCreateInput
+  connect: AnswerWhereUniqueInput
+}
+
+input AnswerCreateWithoutQuestionInput {
+  text: String!
+}
+
+type AnswerEdge {
+  node: Answer!
+  cursor: String!
+}
+
+enum AnswerOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AnswerPreviousValues {
+  id: ID!
+  text: String!
+}
+
+input AnswerScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [AnswerScalarWhereInput!]
+  OR: [AnswerScalarWhereInput!]
+  NOT: [AnswerScalarWhereInput!]
+}
+
+type AnswerSubscriptionPayload {
+  mutation: MutationType!
+  node: Answer
+  updatedFields: [String!]
+  previousValues: AnswerPreviousValues
+}
+
+input AnswerSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AnswerWhereInput
+  AND: [AnswerSubscriptionWhereInput!]
+  OR: [AnswerSubscriptionWhereInput!]
+  NOT: [AnswerSubscriptionWhereInput!]
+}
+
+input AnswerUpdateDataInput {
+  text: String
+  question: QuestionUpdateOneWithoutAnswersInput
+}
+
+input AnswerUpdateInput {
+  text: String
+  question: QuestionUpdateOneWithoutAnswersInput
+}
+
+input AnswerUpdateManyDataInput {
+  text: String
+}
+
+input AnswerUpdateManyMutationInput {
+  text: String
+}
+
+input AnswerUpdateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutQuestionInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutQuestionInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+  updateMany: [AnswerUpdateManyWithWhereNestedInput!]
+}
+
+input AnswerUpdateManyWithWhereNestedInput {
+  where: AnswerScalarWhereInput!
+  data: AnswerUpdateManyDataInput!
+}
+
+input AnswerUpdateOneRequiredInput {
+  create: AnswerCreateInput
+  update: AnswerUpdateDataInput
+  upsert: AnswerUpsertNestedInput
+  connect: AnswerWhereUniqueInput
+}
+
+input AnswerUpdateWithoutQuestionDataInput {
+  text: String
+}
+
+input AnswerUpdateWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  data: AnswerUpdateWithoutQuestionDataInput!
+}
+
+input AnswerUpsertNestedInput {
+  update: AnswerUpdateDataInput!
+  create: AnswerCreateInput!
+}
+
+input AnswerUpsertWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutQuestionDataInput!
+  create: AnswerCreateWithoutQuestionInput!
+}
+
+input AnswerWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  question: QuestionWhereInput
+  AND: [AnswerWhereInput!]
+  OR: [AnswerWhereInput!]
+  NOT: [AnswerWhereInput!]
+}
+
+input AnswerWhereUniqueInput {
+  id: ID
+}
+
+type BatchPayload {
+  count: Long!
+}
+
+type CompletedTest {
+  id: ID!
+  user: User!
+  test: Test!
+  score: Score!
+}
+
+type CompletedTestConnection {
+  pageInfo: PageInfo!
+  edges: [CompletedTestEdge]!
+  aggregate: AggregateCompletedTest!
+}
+
+input CompletedTestCreateInput {
+  user: UserCreateOneInput!
+  test: TestCreateOneInput!
+  score: ScoreCreateOneInput!
+}
+
+type CompletedTestEdge {
+  node: CompletedTest!
+  cursor: String!
+}
+
+enum CompletedTestOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CompletedTestPreviousValues {
+  id: ID!
+}
+
+type CompletedTestSubscriptionPayload {
+  mutation: MutationType!
+  node: CompletedTest
+  updatedFields: [String!]
+  previousValues: CompletedTestPreviousValues
+}
+
+input CompletedTestSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CompletedTestWhereInput
+  AND: [CompletedTestSubscriptionWhereInput!]
+  OR: [CompletedTestSubscriptionWhereInput!]
+  NOT: [CompletedTestSubscriptionWhereInput!]
+}
+
+input CompletedTestUpdateInput {
+  user: UserUpdateOneRequiredInput
+  test: TestUpdateOneRequiredInput
+  score: ScoreUpdateOneRequiredInput
+}
+
+input CompletedTestWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  test: TestWhereInput
+  score: ScoreWhereInput
+  AND: [CompletedTestWhereInput!]
+  OR: [CompletedTestWhereInput!]
+  NOT: [CompletedTestWhereInput!]
+}
+
+input CompletedTestWhereUniqueInput {
+  id: ID
+}
+
+scalar Long
+
+type Mutation {
+  createAnswer(data: AnswerCreateInput!): Answer!
+  updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
+  updateManyAnswers(data: AnswerUpdateManyMutationInput!, where: AnswerWhereInput): BatchPayload!
+  upsertAnswer(where: AnswerWhereUniqueInput!, create: AnswerCreateInput!, update: AnswerUpdateInput!): Answer!
+  deleteAnswer(where: AnswerWhereUniqueInput!): Answer
+  deleteManyAnswers(where: AnswerWhereInput): BatchPayload!
+  createCompletedTest(data: CompletedTestCreateInput!): CompletedTest!
+  updateCompletedTest(data: CompletedTestUpdateInput!, where: CompletedTestWhereUniqueInput!): CompletedTest
+  upsertCompletedTest(where: CompletedTestWhereUniqueInput!, create: CompletedTestCreateInput!, update: CompletedTestUpdateInput!): CompletedTest!
+  deleteCompletedTest(where: CompletedTestWhereUniqueInput!): CompletedTest
+  deleteManyCompletedTests(where: CompletedTestWhereInput): BatchPayload!
+  createQuestion(data: QuestionCreateInput!): Question!
+  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
+  updateManyQuestions(data: QuestionUpdateManyMutationInput!, where: QuestionWhereInput): BatchPayload!
+  upsertQuestion(where: QuestionWhereUniqueInput!, create: QuestionCreateInput!, update: QuestionUpdateInput!): Question!
+  deleteQuestion(where: QuestionWhereUniqueInput!): Question
+  deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
+  createScore(data: ScoreCreateInput!): Score!
+  updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
+  upsertScore(where: ScoreWhereUniqueInput!, create: ScoreCreateInput!, update: ScoreUpdateInput!): Score!
+  deleteScore(where: ScoreWhereUniqueInput!): Score
+  deleteManyScores(where: ScoreWhereInput): BatchPayload!
+  createTest(data: TestCreateInput!): Test!
+  updateTest(data: TestUpdateInput!, where: TestWhereUniqueInput!): Test
+  updateManyTests(data: TestUpdateManyMutationInput!, where: TestWhereInput): BatchPayload!
+  upsertTest(where: TestWhereUniqueInput!, create: TestCreateInput!, update: TestUpdateInput!): Test!
+  deleteTest(where: TestWhereUniqueInput!): Test
+  deleteManyTests(where: TestWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  answer(where: AnswerWhereUniqueInput!): Answer
+  answers(where: AnswerWhereInput, orderBy: AnswerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Answer]!
+  answersConnection(where: AnswerWhereInput, orderBy: AnswerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AnswerConnection!
+  completedTest(where: CompletedTestWhereUniqueInput!): CompletedTest
+  completedTests(where: CompletedTestWhereInput, orderBy: CompletedTestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CompletedTest]!
+  completedTestsConnection(where: CompletedTestWhereInput, orderBy: CompletedTestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CompletedTestConnection!
+  question(where: QuestionWhereUniqueInput!): Question
+  questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question]!
+  questionsConnection(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuestionConnection!
+  score(where: ScoreWhereUniqueInput!): Score
+  scores(where: ScoreWhereInput, orderBy: ScoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Score]!
+  scoresConnection(where: ScoreWhereInput, orderBy: ScoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScoreConnection!
+  test(where: TestWhereUniqueInput!): Test
+  tests(where: TestWhereInput, orderBy: TestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Test]!
+  testsConnection(where: TestWhereInput, orderBy: TestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TestConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  node(id: ID!): Node
+}
+
+type Question {
+  id: ID!
+  text: String!
+  test: Test!
+  answers(where: AnswerWhereInput, orderBy: AnswerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Answer!]
+  correctAnswer: Answer!
+}
+
+type QuestionConnection {
+  pageInfo: PageInfo!
+  edges: [QuestionEdge]!
+  aggregate: AggregateQuestion!
+}
+
+input QuestionCreateInput {
+  text: String!
+  test: TestCreateOneWithoutQuestionsInput!
+  answers: AnswerCreateManyWithoutQuestionInput
+  correctAnswer: AnswerCreateOneInput!
+}
+
+input QuestionCreateManyInput {
+  create: [QuestionCreateInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+input QuestionCreateManyWithoutTestInput {
+  create: [QuestionCreateWithoutTestInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+input QuestionCreateOneWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+}
+
+input QuestionCreateWithoutAnswersInput {
+  text: String!
+  test: TestCreateOneWithoutQuestionsInput!
+  correctAnswer: AnswerCreateOneInput!
+}
+
+input QuestionCreateWithoutTestInput {
+  text: String!
+  answers: AnswerCreateManyWithoutQuestionInput
+  correctAnswer: AnswerCreateOneInput!
+}
+
+type QuestionEdge {
+  node: Question!
+  cursor: String!
+}
+
+enum QuestionOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type QuestionPreviousValues {
+  id: ID!
+  text: String!
+}
+
+input QuestionScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [QuestionScalarWhereInput!]
+  OR: [QuestionScalarWhereInput!]
+  NOT: [QuestionScalarWhereInput!]
+}
+
+type QuestionSubscriptionPayload {
+  mutation: MutationType!
+  node: Question
+  updatedFields: [String!]
+  previousValues: QuestionPreviousValues
+}
+
+input QuestionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: QuestionWhereInput
+  AND: [QuestionSubscriptionWhereInput!]
+  OR: [QuestionSubscriptionWhereInput!]
+  NOT: [QuestionSubscriptionWhereInput!]
+}
+
+input QuestionUpdateDataInput {
+  text: String
+  test: TestUpdateOneRequiredWithoutQuestionsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+  correctAnswer: AnswerUpdateOneRequiredInput
+}
+
+input QuestionUpdateInput {
+  text: String
+  test: TestUpdateOneRequiredWithoutQuestionsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+  correctAnswer: AnswerUpdateOneRequiredInput
+}
+
+input QuestionUpdateManyDataInput {
+  text: String
+}
+
+input QuestionUpdateManyInput {
+  create: [QuestionCreateInput!]
+  update: [QuestionUpdateWithWhereUniqueNestedInput!]
+  upsert: [QuestionUpsertWithWhereUniqueNestedInput!]
+  delete: [QuestionWhereUniqueInput!]
+  connect: [QuestionWhereUniqueInput!]
+  set: [QuestionWhereUniqueInput!]
+  disconnect: [QuestionWhereUniqueInput!]
+  deleteMany: [QuestionScalarWhereInput!]
+  updateMany: [QuestionUpdateManyWithWhereNestedInput!]
+}
+
+input QuestionUpdateManyMutationInput {
+  text: String
+}
+
+input QuestionUpdateManyWithoutTestInput {
+  create: [QuestionCreateWithoutTestInput!]
+  delete: [QuestionWhereUniqueInput!]
+  connect: [QuestionWhereUniqueInput!]
+  set: [QuestionWhereUniqueInput!]
+  disconnect: [QuestionWhereUniqueInput!]
+  update: [QuestionUpdateWithWhereUniqueWithoutTestInput!]
+  upsert: [QuestionUpsertWithWhereUniqueWithoutTestInput!]
+  deleteMany: [QuestionScalarWhereInput!]
+  updateMany: [QuestionUpdateManyWithWhereNestedInput!]
+}
+
+input QuestionUpdateManyWithWhereNestedInput {
+  where: QuestionScalarWhereInput!
+  data: QuestionUpdateManyDataInput!
+}
+
+input QuestionUpdateOneWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  update: QuestionUpdateWithoutAnswersDataInput
+  upsert: QuestionUpsertWithoutAnswersInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: QuestionWhereUniqueInput
+}
+
+input QuestionUpdateWithoutAnswersDataInput {
+  text: String
+  test: TestUpdateOneRequiredWithoutQuestionsInput
+  correctAnswer: AnswerUpdateOneRequiredInput
+}
+
+input QuestionUpdateWithoutTestDataInput {
+  text: String
+  answers: AnswerUpdateManyWithoutQuestionInput
+  correctAnswer: AnswerUpdateOneRequiredInput
+}
+
+input QuestionUpdateWithWhereUniqueNestedInput {
+  where: QuestionWhereUniqueInput!
+  data: QuestionUpdateDataInput!
+}
+
+input QuestionUpdateWithWhereUniqueWithoutTestInput {
+  where: QuestionWhereUniqueInput!
+  data: QuestionUpdateWithoutTestDataInput!
+}
+
+input QuestionUpsertWithoutAnswersInput {
+  update: QuestionUpdateWithoutAnswersDataInput!
+  create: QuestionCreateWithoutAnswersInput!
+}
+
+input QuestionUpsertWithWhereUniqueNestedInput {
+  where: QuestionWhereUniqueInput!
+  update: QuestionUpdateDataInput!
+  create: QuestionCreateInput!
+}
+
+input QuestionUpsertWithWhereUniqueWithoutTestInput {
+  where: QuestionWhereUniqueInput!
+  update: QuestionUpdateWithoutTestDataInput!
+  create: QuestionCreateWithoutTestInput!
+}
+
+input QuestionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  test: TestWhereInput
+  answers_every: AnswerWhereInput
+  answers_some: AnswerWhereInput
+  answers_none: AnswerWhereInput
+  correctAnswer: AnswerWhereInput
+  AND: [QuestionWhereInput!]
+  OR: [QuestionWhereInput!]
+  NOT: [QuestionWhereInput!]
+}
+
+input QuestionWhereUniqueInput {
+  id: ID
+}
+
+type Score {
+  id: ID!
+  correctlyAnswered(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question!]
+  wronglyAnswered(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question!]
+}
+
+type ScoreConnection {
+  pageInfo: PageInfo!
+  edges: [ScoreEdge]!
+  aggregate: AggregateScore!
+}
+
+input ScoreCreateInput {
+  correctlyAnswered: QuestionCreateManyInput
+  wronglyAnswered: QuestionCreateManyInput
+}
+
+input ScoreCreateOneInput {
+  create: ScoreCreateInput
+  connect: ScoreWhereUniqueInput
+}
+
+type ScoreEdge {
+  node: Score!
+  cursor: String!
+}
+
+enum ScoreOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ScorePreviousValues {
+  id: ID!
+}
+
+type ScoreSubscriptionPayload {
+  mutation: MutationType!
+  node: Score
+  updatedFields: [String!]
+  previousValues: ScorePreviousValues
+}
+
+input ScoreSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ScoreWhereInput
+  AND: [ScoreSubscriptionWhereInput!]
+  OR: [ScoreSubscriptionWhereInput!]
+  NOT: [ScoreSubscriptionWhereInput!]
+}
+
+input ScoreUpdateDataInput {
+  correctlyAnswered: QuestionUpdateManyInput
+  wronglyAnswered: QuestionUpdateManyInput
+}
+
+input ScoreUpdateInput {
+  correctlyAnswered: QuestionUpdateManyInput
+  wronglyAnswered: QuestionUpdateManyInput
+}
+
+input ScoreUpdateOneRequiredInput {
+  create: ScoreCreateInput
+  update: ScoreUpdateDataInput
+  upsert: ScoreUpsertNestedInput
+  connect: ScoreWhereUniqueInput
+}
+
+input ScoreUpsertNestedInput {
+  update: ScoreUpdateDataInput!
+  create: ScoreCreateInput!
+}
+
+input ScoreWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  correctlyAnswered_every: QuestionWhereInput
+  correctlyAnswered_some: QuestionWhereInput
+  correctlyAnswered_none: QuestionWhereInput
+  wronglyAnswered_every: QuestionWhereInput
+  wronglyAnswered_some: QuestionWhereInput
+  wronglyAnswered_none: QuestionWhereInput
+  AND: [ScoreWhereInput!]
+  OR: [ScoreWhereInput!]
+  NOT: [ScoreWhereInput!]
+}
+
+input ScoreWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  answer(where: AnswerSubscriptionWhereInput): AnswerSubscriptionPayload
+  completedTest(where: CompletedTestSubscriptionWhereInput): CompletedTestSubscriptionPayload
+  question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
+  score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
+  test(where: TestSubscriptionWhereInput): TestSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Test {
+  id: ID!
+  name: String!
+  questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question!]
+}
+
+type TestConnection {
+  pageInfo: PageInfo!
+  edges: [TestEdge]!
+  aggregate: AggregateTest!
+}
+
+input TestCreateInput {
+  name: String!
+  questions: QuestionCreateManyWithoutTestInput
+}
+
+input TestCreateOneInput {
+  create: TestCreateInput
+  connect: TestWhereUniqueInput
+}
+
+input TestCreateOneWithoutQuestionsInput {
+  create: TestCreateWithoutQuestionsInput
+  connect: TestWhereUniqueInput
+}
+
+input TestCreateWithoutQuestionsInput {
+  name: String!
+}
+
+type TestEdge {
+  node: Test!
+  cursor: String!
+}
+
+enum TestOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TestPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type TestSubscriptionPayload {
+  mutation: MutationType!
+  node: Test
+  updatedFields: [String!]
+  previousValues: TestPreviousValues
+}
+
+input TestSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TestWhereInput
+  AND: [TestSubscriptionWhereInput!]
+  OR: [TestSubscriptionWhereInput!]
+  NOT: [TestSubscriptionWhereInput!]
+}
+
+input TestUpdateDataInput {
+  name: String
+  questions: QuestionUpdateManyWithoutTestInput
+}
+
+input TestUpdateInput {
+  name: String
+  questions: QuestionUpdateManyWithoutTestInput
+}
+
+input TestUpdateManyMutationInput {
+  name: String
+}
+
+input TestUpdateOneRequiredInput {
+  create: TestCreateInput
+  update: TestUpdateDataInput
+  upsert: TestUpsertNestedInput
+  connect: TestWhereUniqueInput
+}
+
+input TestUpdateOneRequiredWithoutQuestionsInput {
+  create: TestCreateWithoutQuestionsInput
+  update: TestUpdateWithoutQuestionsDataInput
+  upsert: TestUpsertWithoutQuestionsInput
+  connect: TestWhereUniqueInput
+}
+
+input TestUpdateWithoutQuestionsDataInput {
+  name: String
+}
+
+input TestUpsertNestedInput {
+  update: TestUpdateDataInput!
+  create: TestCreateInput!
+}
+
+input TestUpsertWithoutQuestionsInput {
+  update: TestUpdateWithoutQuestionsDataInput!
+  create: TestCreateWithoutQuestionsInput!
+}
+
+input TestWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  questions_every: QuestionWhereInput
+  questions_some: QuestionWhereInput
+  questions_none: QuestionWhereInput
+  AND: [TestWhereInput!]
+  OR: [TestWhereInput!]
+  NOT: [TestWhereInput!]
+}
+
+input TestWhereUniqueInput {
+  id: ID
+}
+
+type User {
+  id: ID!
+  username: String!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  username: String!
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  username_ASC
+  username_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  username: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateDataInput {
+  username: String
+}
+
+input UserUpdateInput {
+  username: String
+}
+
+input UserUpdateManyMutationInput {
+  username: String
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  username: String
+}
