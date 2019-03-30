@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export interface Exists {
   answer: (where?: AnswerWhereInput) => Promise<boolean>;
   completedTest: (where?: CompletedTestWhereInput) => Promise<boolean>;
+  points: (where?: PointsWhereInput) => Promise<boolean>;
   question: (where?: QuestionWhereInput) => Promise<boolean>;
   score: (where?: ScoreWhereInput) => Promise<boolean>;
   test: (where?: TestWhereInput) => Promise<boolean>;
@@ -87,6 +88,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => CompletedTestConnectionPromise;
+  points: (where: PointsWhereUniqueInput) => PointsPromise;
+  pointses: (
+    args?: {
+      where?: PointsWhereInput;
+      orderBy?: PointsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Points>;
+  pointsesConnection: (
+    args?: {
+      where?: PointsWhereInput;
+      orderBy?: PointsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => PointsConnectionPromise;
   question: (where: QuestionWhereUniqueInput) => QuestionPromise;
   questions: (
     args?: {
@@ -221,6 +245,22 @@ export interface Prisma {
   deleteManyCompletedTests: (
     where?: CompletedTestWhereInput
   ) => BatchPayloadPromise;
+  createPoints: (data: PointsCreateInput) => PointsPromise;
+  updatePoints: (
+    args: { data: PointsUpdateInput; where: PointsWhereUniqueInput }
+  ) => PointsPromise;
+  updateManyPointses: (
+    args: { data: PointsUpdateManyMutationInput; where?: PointsWhereInput }
+  ) => BatchPayloadPromise;
+  upsertPoints: (
+    args: {
+      where: PointsWhereUniqueInput;
+      create: PointsCreateInput;
+      update: PointsUpdateInput;
+    }
+  ) => PointsPromise;
+  deletePoints: (where: PointsWhereUniqueInput) => PointsPromise;
+  deleteManyPointses: (where?: PointsWhereInput) => BatchPayloadPromise;
   createQuestion: (data: QuestionCreateInput) => QuestionPromise;
   updateQuestion: (
     args: { data: QuestionUpdateInput; where: QuestionWhereUniqueInput }
@@ -297,6 +337,9 @@ export interface Subscription {
   completedTest: (
     where?: CompletedTestSubscriptionWhereInput
   ) => CompletedTestSubscriptionPayloadSubscription;
+  points: (
+    where?: PointsSubscriptionWhereInput
+  ) => PointsSubscriptionPayloadSubscription;
   question: (
     where?: QuestionSubscriptionWhereInput
   ) => QuestionSubscriptionPayloadSubscription;
@@ -347,6 +390,16 @@ export type CompletedTestOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type PointsOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "points_ASC"
+  | "points_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type ScoreOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -370,6 +423,8 @@ export type UserOrderByInput =
   | "id_DESC"
   | "username_ASC"
   | "username_DESC"
+  | "points_ASC"
+  | "points_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -548,6 +603,14 @@ export interface UserWhereInput {
   username_not_starts_with?: String;
   username_ends_with?: String;
   username_not_ends_with?: String;
+  points?: Int;
+  points_not?: Int;
+  points_in?: Int[] | Int;
+  points_not_in?: Int[] | Int;
+  points_lt?: Int;
+  points_lte?: Int;
+  points_gt?: Int;
+  points_gte?: Int;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -577,6 +640,39 @@ export interface ScoreWhereInput {
   AND?: ScoreWhereInput[] | ScoreWhereInput;
   OR?: ScoreWhereInput[] | ScoreWhereInput;
   NOT?: ScoreWhereInput[] | ScoreWhereInput;
+}
+
+export type PointsWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface PointsWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  user?: UserWhereInput;
+  points?: Int;
+  points_not?: Int;
+  points_in?: Int[] | Int;
+  points_not_in?: Int[] | Int;
+  points_lt?: Int;
+  points_lte?: Int;
+  points_gt?: Int;
+  points_gte?: Int;
+  AND?: PointsWhereInput[] | PointsWhereInput;
+  OR?: PointsWhereInput[] | PointsWhereInput;
+  NOT?: PointsWhereInput[] | PointsWhereInput;
 }
 
 export type QuestionWhereUniqueInput = AtLeastOne<{
@@ -701,6 +797,7 @@ export interface UserCreateOneInput {
 
 export interface UserCreateInput {
   username: String;
+  points: Int;
 }
 
 export interface TestCreateOneInput {
@@ -772,6 +869,7 @@ export interface UserUpdateOneRequiredInput {
 
 export interface UserUpdateDataInput {
   username?: String;
+  points?: Int;
 }
 
 export interface UserUpsertNestedInput {
@@ -1005,6 +1103,20 @@ export interface ScoreUpsertNestedInput {
   create: ScoreCreateInput;
 }
 
+export interface PointsCreateInput {
+  user: UserCreateOneInput;
+  points: Int;
+}
+
+export interface PointsUpdateInput {
+  user?: UserUpdateOneRequiredInput;
+  points?: Int;
+}
+
+export interface PointsUpdateManyMutationInput {
+  points?: Int;
+}
+
 export interface QuestionUpdateInput {
   text?: String;
   test?: TestUpdateOneRequiredWithoutQuestionsInput;
@@ -1032,10 +1144,12 @@ export interface TestUpdateManyMutationInput {
 
 export interface UserUpdateInput {
   username?: String;
+  points?: Int;
 }
 
 export interface UserUpdateManyMutationInput {
   username?: String;
+  points?: Int;
 }
 
 export interface AnswerSubscriptionWhereInput {
@@ -1064,6 +1178,17 @@ export interface CompletedTestSubscriptionWhereInput {
   NOT?:
     | CompletedTestSubscriptionWhereInput[]
     | CompletedTestSubscriptionWhereInput;
+}
+
+export interface PointsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PointsWhereInput;
+  AND?: PointsSubscriptionWhereInput[] | PointsSubscriptionWhereInput;
+  OR?: PointsSubscriptionWhereInput[] | PointsSubscriptionWhereInput;
+  NOT?: PointsSubscriptionWhereInput[] | PointsSubscriptionWhereInput;
 }
 
 export interface QuestionSubscriptionWhereInput {
@@ -1317,11 +1442,13 @@ export interface CompletedTestSubscription
 export interface User {
   id: ID_Output;
   username: String;
+  points: Int;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
+  points: () => Promise<Int>;
 }
 
 export interface UserSubscription
@@ -1329,6 +1456,7 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
+  points: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Score {
@@ -1441,6 +1569,79 @@ export interface AggregateCompletedTestPromise
 
 export interface AggregateCompletedTestSubscription
   extends Promise<AsyncIterator<AggregateCompletedTest>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Points {
+  id: ID_Output;
+  points: Int;
+}
+
+export interface PointsPromise extends Promise<Points>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  points: () => Promise<Int>;
+}
+
+export interface PointsSubscription
+  extends Promise<AsyncIterator<Points>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  points: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PointsConnection {
+  pageInfo: PageInfo;
+  edges: PointsEdge[];
+}
+
+export interface PointsConnectionPromise
+  extends Promise<PointsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PointsEdge>>() => T;
+  aggregate: <T = AggregatePointsPromise>() => T;
+}
+
+export interface PointsConnectionSubscription
+  extends Promise<AsyncIterator<PointsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PointsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePointsSubscription>() => T;
+}
+
+export interface PointsEdge {
+  node: Points;
+  cursor: String;
+}
+
+export interface PointsEdgePromise extends Promise<PointsEdge>, Fragmentable {
+  node: <T = PointsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PointsEdgeSubscription
+  extends Promise<AsyncIterator<PointsEdge>>,
+    Fragmentable {
+  node: <T = PointsSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePoints {
+  count: Int;
+}
+
+export interface AggregatePointsPromise
+  extends Promise<AggregatePoints>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePointsSubscription
+  extends Promise<AsyncIterator<AggregatePoints>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1764,6 +1965,50 @@ export interface CompletedTestPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
 }
 
+export interface PointsSubscriptionPayload {
+  mutation: MutationType;
+  node: Points;
+  updatedFields: String[];
+  previousValues: PointsPreviousValues;
+}
+
+export interface PointsSubscriptionPayloadPromise
+  extends Promise<PointsSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PointsPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PointsPreviousValuesPromise>() => T;
+}
+
+export interface PointsSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PointsSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PointsSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PointsPreviousValuesSubscription>() => T;
+}
+
+export interface PointsPreviousValues {
+  id: ID_Output;
+  points: Int;
+}
+
+export interface PointsPreviousValuesPromise
+  extends Promise<PointsPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  points: () => Promise<Int>;
+}
+
+export interface PointsPreviousValuesSubscription
+  extends Promise<AsyncIterator<PointsPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  points: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface QuestionSubscriptionPayload {
   mutation: MutationType;
   node: Question;
@@ -1921,6 +2166,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   username: String;
+  points: Int;
 }
 
 export interface UserPreviousValuesPromise
@@ -1928,6 +2174,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
+  points: () => Promise<Int>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1935,6 +2182,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
+  points: () => Promise<AsyncIterator<Int>>;
 }
 
 /*
@@ -1987,6 +2235,10 @@ export const models: Model[] = [
   },
   {
     name: "Score",
+    embedded: false
+  },
+  {
+    name: "Points",
     embedded: false
   }
 ];

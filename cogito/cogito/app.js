@@ -7,23 +7,14 @@ const app = express();
 const port = 3000;
 const { prisma } = require('./prisma/generated/prisma-client');
 
-const randomInt = (to) => {
-    return Math.round(Math.random() * to);
-};
-
-// A `main` function so that we can use async/await
-/*async function main() {
-
-    // Create a new user called `Alice`
-    const newUser = await prisma.createUser({ username: 'Alice' })
-    console.log(`Created new user: ${newUser.username} (ID: ${newUser.id})`)
-
-    // Read all users from the database and print them to the console
-    const allUsers = await prisma.users()
-    console.log(allUsers)
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
-
-main().catch(e => console.error(e))*/
 
 app.use(session({
     secret: 'keyboard cat',
@@ -44,28 +35,37 @@ app.use((req, res, next) => {
 
 app.use('/login', (req, res) => {
     if (req.body.studentid) {
-        const getUser = util.callbackify(prisma.user)
+        const getUser = util.callbackify(prisma.user);
         const saveUser = util.callbackify(prisma.createUser);
         async.waterfall(
             [
                 (callback) => {
-                    getUser({ username: req.body.studentid }, callback);
+                    getUser({ username: req.body.studentid}, callback);
                 },
                 (result, callback) => {
                     if (result) {
                         async.setImmediate(callback, null, result);
                     }
                     else {
-                        saveUser({ username: req.body.studentid }, callback);
+                        async.waterfall(
+                            [
+                                (callback) => {
+                                    saveUser({ username: req.body.studentid, points: 0 }, callback);
+                                }
+                            ],
+                            (err, result) => {
+                                callback(err, result);
+                            }
+                        );              
                     }
                 }
             ],
             (err, result) => {
+                console.log(err,result)
                 if (err) {
                     res.json({ success: false, data: err });
                 }
                 else {
-                    console.log("loginsuccess")
                     req.session.studentid = result.id;
                     res.json({ success: true });
                 }
@@ -93,14 +93,16 @@ app.use('/getQuestion', (req, res) => {
         async.waterfall(
             [
                 (callback) => {
-                    getQuestions({ where: { test: { name: "Arts" } } }, callback);
+                    getQuestions({ where: { test: { name: req.body.topic } } }, callback);
                 },
                 (questions, callback) => {
+                    shuffleArray(questions);
                     getAnswers({ where: { question: { id: questions[0].id } } }, (err, result) => {
                         if (err) {
-                            callback(err)
+                            callback(err);
                         }
                         else {
+                            shuffleArray(result);
                             var ret = {
                                 success: true,
                                 data: {
@@ -114,9 +116,9 @@ app.use('/getQuestion', (req, res) => {
                                     ]
                                 }
                             };
-                            callback(null, ret)
+                            callback(null, ret);
                         }
-                    })
+                    });
                 }
             ],
             (err, result) => {
@@ -127,7 +129,7 @@ app.use('/getQuestion', (req, res) => {
                     res.json(result);
                 }
             }
-        )
+        );
     }
     else {
         res.json({ success: false, data: "Unauthorized" });
@@ -136,28 +138,58 @@ app.use('/getQuestion', (req, res) => {
 
 //req { questionId: 1, answer:"valasz2"};
 app.use('/sendAnswer', (req, res) => {
-    const getCorrectAnswer = util.callbackify(prisma.questions)
-    
-    if (req.session.studentid) {
+    const getCorrectAnswer = util.callbackify(prisma.questions);
+    const getUser = util.callbackify(prisma.user);
+    const updateUser = util.callbackify(prisma.updateUser);
+    let getCorrect = (callback) => {
         getCorrectAnswer({
             where: {
                 id: req.body.questionId,
                 correctAnswer: { text: req.body.answer }
             }
         },
-        (err, result) => {
-            if (err) {
-                res.json({ success: false, data: err });
-            }
-            else {
-                if (result.length == 0) {
-                    res.json({ success: false, data: {correct:false} });
+            (err, result) => {
+                if (err) {
+                    callback(err);
                 }
                 else {
-                    res.json({ success: false, data: { correct: true } });
+                    callback(null, result.length === 1);
+                }
+            });
+    };
+    let saveResult = (isCorrect, callback) => {
+
+        getUser({ id: req.session.studentid } , (err, result) => {
+            if (err) { callback(err); }
+            else {
+                let point = (isCorrect) ? 1 : 0;
+                if (result) {
+                    updateUser({ data: { points: result.points + point }, where: { id: req.session.studentid }  }, (err) => {
+                        callback(err, isCorrect);
+                    });
+                }
+                else {
+                    callback(err, isCorrect);
                 }
             }
-        })
+        });
+    };
+    
+    if (req.session.studentid) {
+        async.waterfall(
+            [
+                getCorrect,
+                saveResult
+            ],
+            (err, isCorrect) => {
+                if (err) {
+                    res.json({ success: false, data: err });
+                }
+                else {
+                    res.json({ success: true, data: { correct: isCorrect } });
+                }
+            }
+        );
     }
     else {
         res.json({ success: false, data: "Unauthorized" });
@@ -165,14 +197,25 @@ app.use('/sendAnswer', (req, res) => {
 });
 
 app.use('/getScore', (req, res) => {
+    const getUser = util.callbackify(prisma.user);
     if (req.session.studentid) {
-        var ret = {
-            success: true,
-            data: {
-                //TODO
+        var par = { id: req.session.studentid };
+        if (req.body.user) {
+            par = { username: req.body.user}
+        }
+        getUser(par, (err, result) => {
+            if (err) { res.json({ success: false, data: err }) }
+            else {
+                if (result) {
+                    res.json({ success: true, data: { username: result.username, points: result.points } });
+                }
+                else {
+                    res.json({
+                        success: true
+                    })
+                }
             }
-        };
-        res.json(ret);
+        })
     }
     else {
         res.json({ success: false, data: "Unauthorized" });

@@ -20,9 +20,13 @@ function serverRequest(url, body, callback) {
 
 document.getElementById("submitLogin").addEventListener("click", function (event) {
     event.preventDefault();
-    serverRequest('/login', { studentid: document.getElementById("textarea").value }, function (err, result) {
-        if (!err && result.success) {
-            document.location.href = "/test.html"
-        }
-    });
+    var username = document.getElementById("textarea").value
+    if (username) {
+        serverRequest('/login', { studentid: document.getElementById("textarea").value }, function (err, result) {
+            if (!err && result.success) {
+                localStorage.setItem('username', username)
+                document.location.href = "/test.html"
+            }
+        });
+    }
 });
