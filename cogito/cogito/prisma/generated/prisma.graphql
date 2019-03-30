@@ -6,6 +6,10 @@ type AggregateCompletedTest {
   count: Int!
 }
 
+type AggregatePoints {
+  count: Int!
+}
+
 type AggregateQuestion {
   count: Int!
 }
@@ -333,6 +337,12 @@ type Mutation {
   upsertCompletedTest(where: CompletedTestWhereUniqueInput!, create: CompletedTestCreateInput!, update: CompletedTestUpdateInput!): CompletedTest!
   deleteCompletedTest(where: CompletedTestWhereUniqueInput!): CompletedTest
   deleteManyCompletedTests(where: CompletedTestWhereInput): BatchPayload!
+  createPoints(data: PointsCreateInput!): Points!
+  updatePoints(data: PointsUpdateInput!, where: PointsWhereUniqueInput!): Points
+  updateManyPointses(data: PointsUpdateManyMutationInput!, where: PointsWhereInput): BatchPayload!
+  upsertPoints(where: PointsWhereUniqueInput!, create: PointsCreateInput!, update: PointsUpdateInput!): Points!
+  deletePoints(where: PointsWhereUniqueInput!): Points
+  deleteManyPointses(where: PointsWhereInput): BatchPayload!
   createQuestion(data: QuestionCreateInput!): Question!
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
   updateManyQuestions(data: QuestionUpdateManyMutationInput!, where: QuestionWhereInput): BatchPayload!
@@ -375,6 +385,104 @@ type PageInfo {
   endCursor: String
 }
 
+type Points {
+  id: ID!
+  user: User!
+  points: Int!
+}
+
+type PointsConnection {
+  pageInfo: PageInfo!
+  edges: [PointsEdge]!
+  aggregate: AggregatePoints!
+}
+
+input PointsCreateInput {
+  user: UserCreateOneInput!
+  points: Int!
+}
+
+type PointsEdge {
+  node: Points!
+  cursor: String!
+}
+
+enum PointsOrderByInput {
+  id_ASC
+  id_DESC
+  points_ASC
+  points_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PointsPreviousValues {
+  id: ID!
+  points: Int!
+}
+
+type PointsSubscriptionPayload {
+  mutation: MutationType!
+  node: Points
+  updatedFields: [String!]
+  previousValues: PointsPreviousValues
+}
+
+input PointsSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PointsWhereInput
+  AND: [PointsSubscriptionWhereInput!]
+  OR: [PointsSubscriptionWhereInput!]
+  NOT: [PointsSubscriptionWhereInput!]
+}
+
+input PointsUpdateInput {
+  user: UserUpdateOneRequiredInput
+  points: Int
+}
+
+input PointsUpdateManyMutationInput {
+  points: Int
+}
+
+input PointsWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  points: Int
+  points_not: Int
+  points_in: [Int!]
+  points_not_in: [Int!]
+  points_lt: Int
+  points_lte: Int
+  points_gt: Int
+  points_gte: Int
+  AND: [PointsWhereInput!]
+  OR: [PointsWhereInput!]
+  NOT: [PointsWhereInput!]
+}
+
+input PointsWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   answer(where: AnswerWhereUniqueInput!): Answer
   answers(where: AnswerWhereInput, orderBy: AnswerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Answer]!
@@ -382,6 +490,9 @@ type Query {
   completedTest(where: CompletedTestWhereUniqueInput!): CompletedTest
   completedTests(where: CompletedTestWhereInput, orderBy: CompletedTestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CompletedTest]!
   completedTestsConnection(where: CompletedTestWhereInput, orderBy: CompletedTestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CompletedTestConnection!
+  points(where: PointsWhereUniqueInput!): Points
+  pointses(where: PointsWhereInput, orderBy: PointsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Points]!
+  pointsesConnection(where: PointsWhereInput, orderBy: PointsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PointsConnection!
   question(where: QuestionWhereUniqueInput!): Question
   questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question]!
   questionsConnection(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuestionConnection!
@@ -773,6 +884,7 @@ input ScoreWhereUniqueInput {
 type Subscription {
   answer(where: AnswerSubscriptionWhereInput): AnswerSubscriptionPayload
   completedTest(where: CompletedTestSubscriptionWhereInput): CompletedTestSubscriptionPayload
+  points(where: PointsSubscriptionWhereInput): PointsSubscriptionPayload
   question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
   score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
   test(where: TestSubscriptionWhereInput): TestSubscriptionPayload
@@ -935,6 +1047,7 @@ input TestWhereUniqueInput {
 type User {
   id: ID!
   username: String!
+  points: Int!
 }
 
 type UserConnection {
@@ -945,6 +1058,7 @@ type UserConnection {
 
 input UserCreateInput {
   username: String!
+  points: Int!
 }
 
 input UserCreateOneInput {
@@ -962,6 +1076,8 @@ enum UserOrderByInput {
   id_DESC
   username_ASC
   username_DESC
+  points_ASC
+  points_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -971,6 +1087,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   username: String!
+  points: Int!
 }
 
 type UserSubscriptionPayload {
@@ -993,14 +1110,17 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateDataInput {
   username: String
+  points: Int
 }
 
 input UserUpdateInput {
   username: String
+  points: Int
 }
 
 input UserUpdateManyMutationInput {
   username: String
+  points: Int
 }
 
 input UserUpdateOneRequiredInput {
@@ -1044,6 +1164,14 @@ input UserWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
+  points: Int
+  points_not: Int
+  points_in: [Int!]
+  points_not_in: [Int!]
+  points_lt: Int
+  points_lte: Int
+  points_gt: Int
+  points_gte: Int
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

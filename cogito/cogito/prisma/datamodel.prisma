@@ -1,6 +1,7 @@
 type User {
   id: ID! @unique
   username: String! @unique
+  points: Int!
 }
 
 type Answer {
@@ -34,4 +35,10 @@ type Score {
   id: ID! @unique
   correctlyAnswered: [Question!]! @relation(name: "CorrectlyAnswered")
   wronglyAnswered: [Question!]! @relation(name: "WronglyAnswered")
+}
+
+type Points {
+  id: ID! @unique
+  user: User!
+  points: Int!
 }

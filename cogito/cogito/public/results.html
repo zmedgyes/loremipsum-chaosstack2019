@@ -32,7 +32,7 @@
 
     <div class="searching py-3">
         <input type="text" id="textarea" class="searchcontent">
-        <button type="button" class="search-button">
+        <button type="button" class="search-button" id="search">
             <img src="search.png" alt="search-icon" class="search-icon">
         </button>
     </div>
@@ -41,26 +41,14 @@
     <table class="table">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
                 <th>Username</th>
                 <th>Points</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th>1</th>
-                <td>Mark</td>
-                <td>14</td>
-            </tr>
-            <tr class="you">
-                <th>2</th>
-                <td>Jacob</td>
-                <td>2</td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td>Larry</td>
-                <td>8</td>
+                <td id="username">User</td>
+                <td id="points">0</td>
             </tr>
         </tbody>
     </table>
@@ -101,6 +89,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <!-- inject js end -->
+<script type="text/javascript" src="/js/score.js"></script>
 
 </body>
 
